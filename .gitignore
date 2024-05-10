@@ -1,0 +1,3 @@
+config.ini
+modules/__pycache__
+logs/voice_recorder_transcribe.log

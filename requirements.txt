@@ -1,0 +1,3 @@
+gradio
+configparser
+requests
