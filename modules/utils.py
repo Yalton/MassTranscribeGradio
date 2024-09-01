@@ -16,18 +16,23 @@ logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
 # Create a file handler
-file_handler = logging.FileHandler('logs/voice_recorder_transcribe.log', mode='a')
+file_handler = logging.FileHandler("logs/voice_recorder_transcribe.log", mode="a")
 file_handler.setLevel(logging.INFO)
-file_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+file_handler.setFormatter(
+    logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+)
 
 # Create a console handler
 console_handler = logging.StreamHandler()
 console_handler.setLevel(logging.INFO)
-console_handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+console_handler.setFormatter(
+    logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+)
 
 # Add handlers to logger
 logger.addHandler(file_handler)
 logger.addHandler(console_handler)
+
 
 # Ensure logs directory exists
 def read_config():
@@ -42,5 +47,4 @@ def read_config():
 def create_directories():
     directories = ["logs", "mp3s", "output"]
     for directory in directories:
-        if not os.path.exists(directory):
-            os.makedirs(directory)
+        os.makedirs(directory, exist_ok=True)
