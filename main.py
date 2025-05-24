@@ -1,10 +1,13 @@
 import gradio as gr
-import configparser
+import asyncio
 from modules.transcription_interface import TranscriptionInterface
 from modules.utils import read_config, create_directories
 
 
-async def transcribe_files(audio_files):
+def transcribe_files(audio_files):
+    if not audio_files:
+        return "No files selected"
+    
     config = read_config()
     ip_addr = config.get("WHISPER_API", "ip_addr")
     auth_token = config.get("WHISPER_API", "auth_token")
@@ -13,7 +16,8 @@ async def transcribe_files(audio_files):
 
     transcriptions = []
     for audio_file in audio_files:
-        transcription = await interface.transcribe(audio_file.name)
+        # Run the async method in sync context
+        transcription = asyncio.run(interface.transcribe(audio_file.name))
         if transcription:
             transcriptions.append(transcription)
 
@@ -21,40 +25,13 @@ async def transcribe_files(audio_files):
     return combined_text
 
 
-def create_text_file(text):
-    return text, "transcription.txt"
-
-
 create_directories()
 
-with gr.Blocks() as demo:
-    with gr.Row():
-        with gr.Column():
-            audio_files = gr.File(
-                label="Audio Files",
-                file_count="multiple",
-                file_types=[".wav", ".WAV", ".mp3", ".ogg", ".webm"],
-            )
-            transcribe_button = gr.Button("Transcribe")
-        with gr.Column():
-            output_text = gr.Textbox(label="Transcription", lines=10)
-            download_button = gr.File(
-                None,
-                label="Download Transcription",
-                file_count="single",
-                file_types=[".txt"],
-                interactive=False,
-            )
-
-    transcribe_button.click(
-        fn=transcribe_files,
-        inputs=audio_files,
-        outputs=output_text,
-        queue=False,
-        show_progress=True,
-    )
-    download_button.upload(
-        fn=create_text_file, inputs=output_text, outputs=download_button
-    )
+demo = gr.Interface(
+    fn=transcribe_files,
+    inputs=gr.File(file_count="multiple", file_types=[".wav", ".mp3", ".ogg"]),
+    outputs=gr.Textbox(label="Transcription", lines=10),
+    title="Audio Transcription"
+)
 
 demo.launch(share=True)
