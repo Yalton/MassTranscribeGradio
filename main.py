@@ -57,4 +57,4 @@ with gr.Blocks() as demo:
         fn=create_text_file, inputs=output_text, outputs=download_button
     )
 
-demo.launch()
+demo.launch(share=True)

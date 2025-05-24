@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "7870:7860"
+      - "7860:7860"
     volumes:
       - ./config.ini:/app/config.ini
     environment:
