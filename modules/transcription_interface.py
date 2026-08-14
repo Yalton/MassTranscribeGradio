@@ -12,7 +12,7 @@ class TranscriptionInterface:
         self.auth_token = auth_token
 
     async def transcribe(self, audio_file):
-        url = f'http://{self.ip_addr}:8000/v1/audio/transcriptions/'
+        url = f'http://{self.ip_addr}:8001/v1/audio/transcriptions/'
         headers = {
             "Authorization": f'{self.auth_token}',
             # "Content-Type": "multipart/form-data"
