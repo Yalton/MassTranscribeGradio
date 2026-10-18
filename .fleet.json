@@ -1,0 +1,12 @@
+{
+  "maintenance": {
+    "ecosystems": [
+      "python"
+    ],
+    "enabled": true,
+    "max_new_issues": 5,
+    "security_scan": "daily",
+    "upkeep_scan": "monthly"
+  },
+  "verify_command": "python -m compileall -q main.py modules"
+}
